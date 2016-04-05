@@ -1,27 +1,29 @@
 package eu.trentorise.game.challenges;
 
-import java.util.HashMap;
+import eu.trentorise.game.challenges.api.ChallengeFactoryInterface;
+import eu.trentorise.game.challenges.exception.UndefinedChallengeException;
+import eu.trentorise.game.challenges.model.Challenge;
+import eu.trentorise.game.challenges.model.ChallengeType;
 
-import org.junit.Test;
-import org.junit.Assert;
-import org.junit.Before;
+public class ChallengeFactory implements ChallengeFactoryInterface {
 
-public class ChallengeFactory {
+    @Override
+    public Challenge createChallenge(ChallengeType chType, String templateDir)
+	    throws UndefinedChallengeException {
+	switch (chType) {
+	case PERCENT:
+	    return new PercentMobilityChallenge(templateDir);
+	case TRIPNUMBER:
+	    return new TripNumberChallenge(templateDir);
+	case BADGECOLLECTION:
+	    return new BadgeCollectionCompletionChallenge(templateDir);
+	case RECOMMENDATION:
+	    return new RecommendationChallenge(templateDir);
+	default:
+	    throw new UndefinedChallengeException("Unknown challenge type!"
+		    + chType.toString());
 
-	public Challenge createChallenge(ChallengeType chType) throws UndefinedChallengeException {
-		switch (chType) {
-			case PERCENT:
-				return new PercentMobilityChallenge();	
-			case TRIPNUMBER:
-				return new TripNumberChallenge();	
-			case BADGECOLLECTION:
-				return new BadgeCollectionCompletionChallenge();
-			case RECOMMENDATION:
-				return new RecommendationChallenge();
-			default: 
-				throw new UndefinedChallengeException("Unknown challenge type!" + chType.toString()); 
-			
-		}
 	}
-	
+    }
+
 }
